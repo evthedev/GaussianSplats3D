@@ -15,6 +15,7 @@ export class SplatLoader {
             })
             .then((bufferData) => {
                 const splatBuffer = new SplatBuffer(bufferData);
+                console.log("🚀 ~ file: SplatLoader.js:18 ~ SplatLoader ~ .then ~ splatBuffer:", splatBuffer)
                 resolve(splatBuffer);
             })
             .catch((err) => {

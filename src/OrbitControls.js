@@ -992,7 +992,7 @@ class OrbitControls extends EventDispatcher {
         }
 
         function onPointerMove( event ) {
-
+            // handleMouseMoveRotate( event );
             if ( scope.enabled === false ) return;
 
             if ( event.pointerType === 'touch' ) {
@@ -1373,6 +1373,7 @@ class OrbitControls extends EventDispatcher {
 
         scope.domElement.addEventListener( 'contextmenu', onContextMenu );
 
+        // scope.domElement.addEventListener( 'pointermove', onPointerMove );
         scope.domElement.addEventListener( 'pointerdown', onPointerDown );
         scope.domElement.addEventListener( 'pointercancel', onPointerUp );
         scope.domElement.addEventListener( 'wheel', onMouseWheel, { passive: false } );

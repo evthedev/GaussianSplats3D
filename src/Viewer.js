@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from './OrbitControls.js';
+import { FirstPersonControls } from './FirstPersonControls.js';
+
 import { PlyLoader } from './PlyLoader.js';
 import { SplatLoader } from './SplatLoader.js';
 import { SplatBuffer } from './SplatBuffer.js';
@@ -39,6 +41,7 @@ export class Viewer {
         this.renderer = null;
         this.selfDrivenUpdateFunc = this.update.bind(this);
         this.resizeFunc = this.onResize.bind(this);
+        this.clock = new THREE.Clock();
 
         this.sortWorker = null;
         this.vertexRenderCount = 0;
@@ -110,15 +113,21 @@ export class Viewer {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.setSize(renderDimensions.x, renderDimensions.y);
-
+        
         if (!this.controls) {
-            this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-            this.controls.rotateSpeed = 0.5;
-            this.controls.maxPolarAngle = (0.9 * Math.PI) / 2;
-            this.controls.enableDamping = true;
-            this.controls.dampingFactor = 0.15;
-            this.controls.target.copy(this.initialCameraLookAt);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.rotateSpeed = 0.5;
+        this.controls.maxPolarAngle = (0.9 * Math.PI) / 2;
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.15;
         }
+
+        if (!this.firstPersonControls) {
+            this.firstPersonControls = new FirstPersonControls(this.camera, this.renderer.domElement);
+            this.firstPersonControls.lookSpeed = 0.8;
+            this.firstPersonControls.movementSpeed = 5;
+        }
+
 
         window.addEventListener('resize', this.resizeFunc, false);
 
@@ -194,6 +203,7 @@ export class Viewer {
             }
             fileLoadPromise
             .then((splatBuffer) => {
+            console.log("🚀 ~ file: Viewer.js:206 ~ Viewer ~ .then ~ splatBuffer:", splatBuffer)
 
                 this.splatBuffer = splatBuffer;
 
@@ -393,7 +403,7 @@ export class Viewer {
         if (this.selfDrivenMode) {
             requestAnimationFrame(this.selfDrivenUpdateFunc);
         }
-        this.controls.update();
+        this.firstPersonControls.update(this.clock.getDelta());
         this.updateView();
         this.renderer.autoClear = false;
         this.renderer.render(this.scene, this.camera);

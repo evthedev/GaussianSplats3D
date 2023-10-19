@@ -38,6 +38,7 @@ export class SplatBuffer {
     constructor(bufferDataOrVertexCount) {
         if (typeof bufferDataOrVertexCount === 'number') {
             this.bufferData = new ArrayBuffer(SplatBuffer.RowSizeBytes * bufferDataOrVertexCount);
+            console.log("🚀 ~ file: SplatBuffer.js:42 ~ SplatBuffer ~ constructor ~ this.bufferData:", this.bufferData)
             this.floatArray = new Float32Array(this.bufferData);
             this.uint8Array = new Uint8Array(this.bufferData);
             this.precomputedCovarianceBufferData = null;

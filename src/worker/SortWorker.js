@@ -65,6 +65,7 @@ function sortWorker(self) {
             const POSITIONS_BYTES_PER_ENTRY = Constants.BytesPerFloat * 3;
 
             const sorterWasmBytes = new Uint8Array(e.data.init.sorterWasmBytes);
+            console.log("🚀 ~ file: SortWorker.js:68 ~ sortWorker ~ sorterWasmBytes:", sorterWasmBytes)
             const memoryBytesPerVertex = INDEXES_BYTES_PER_ENTRY + POSITIONS_BYTES_PER_ENTRY;
             const memoryRequiredForVertices = vertexCount * memoryBytesPerVertex;
             const memoryRequiredForSortBuffers = vertexCount * Constants.BytesPerInt * 2 +
@@ -116,7 +117,9 @@ export function createSortWorker(vertexCount, splatBufferRowBytes) {
         ),
     );
 
+    console.log("🚀 ~ file: SortWorker.js:121 ~ createSortWorker ~ SorterWasm:", SorterWasm)
     const sorterWasmBinaryString = atob(SorterWasm);
+    console.log("🚀 ~ file: SortWorker.js:121 ~ createSortWorker ~ sorterWasmBinaryString:", sorterWasmBinaryString)
     const sorterWasmBytes = new Uint8Array(sorterWasmBinaryString.length);
     for (let i = 0; i < sorterWasmBinaryString.length; i++) {
         sorterWasmBytes[i] = sorterWasmBinaryString.charCodeAt(i);
